@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Sticky Navigation</title>
+    
+    <!-- Importing a modern Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        
+        :root {
+            --green-deep: #064e3b;
+            --green-1: #059669;
+            --green-2: #10b981;
+            --green-3: #34d399;
+            --green-light: #ecfdf5;
+            --text-main: #1f2937;
+            --text-light: #ffffff;
+            --bg-color: #f6fef9;
+            --glass-bg: rgba(255, 255, 255, 0.6);
+            --glass-border: rgba(255, 255, 255, 0.4);
+            --transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth; 
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-main);
+            background-color: var(--bg-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        header {
+            position: fixed;
+            top: 20px; 
+            left: 50%;
+            transform: translateX(-50%);
+            width: 95%;
+            max-width: 1100px;
+            padding: 12px 30px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 50px; /* Pill shape */
+            z-index: 1000;
+            transition: var(--transition);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        header.scrolled {
+            top: 10px;
+            width: 98%;
+            background: rgba(255, 255, 255, 0.85);
+            box-shadow: 0 10px 40px rgba(5, 150, 105, 0.15); 
+            border-color: rgba(52, 211, 153, 0.3);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--green-1), var(--green-3));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        header.scrolled .logo {
+            transform: scale(1.05);
+            text-shadow: 0 0 15px rgba(52, 211, 153, 0.3);
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 10px;
+            position: relative; 
+        }
+
+        .nav-item {
+            position: relative;
+        }
+
+        
+        .nav-indicator {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            background: linear-gradient(135deg, var(--green-1), var(--green-3));
+            border-radius: 30px;
+            z-index: 0;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 4px 15px rgba(5, 150, 105, 0.4);
+            pointer-events: none; 
+            opacity: 0;
+        }
+
+        .nav-link {
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--text-main);
+            text-decoration: none;
+            padding: 8px 22px;
+            border-radius: 30px;
+            transition: var(--transition);
+            display: inline-block;
+            position: relative;
+            z-index: 1; 
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--text-light);
+            text-shadow: none;
+            transform: translateY(0);
+        }
+
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            z-index: 100;
+        }
+
+        .bar {
+            display: block;
+            width: 25px;
+            height: 3px;
+            margin: 5px auto;
+            background: linear-gradient(135deg, var(--green-1), var(--green-3));
+            transition: all 0.3s ease-in-out;
+            border-radius: 3px;
+        }
+
+        section {
+            min-height: 100vh;
+            padding: 120px 20px 60px; 
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .content-wrapper {
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(12px);
+            padding: 60px 40px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 8px 32px rgba(5, 150, 105, 0.05);
+            transition: var(--transition);
+            max-width: 1000px;
+            width: 100%;
+        }
+
+        section:hover .content-wrapper {
+            transform: translateY(-10px) scale(1.01);
+            box-shadow: 0 20px 50px rgba(5, 150, 105, 0.15);
+            border-color: rgba(52, 211, 153, 0.4);
+            background: rgba(255, 255, 255, 0.7);
+        }
+
+        .section-title {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, var(--green-deep), var(--green-2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            transition: var(--transition);
+        }
+
+        section:hover .section-title {
+            text-shadow: 0 0 25px rgba(52, 211, 153, 0.3);
+        }
+
+        .section-desc {
+            font-size: 1.2rem;
+            color: #4b5563;
+            transition: var(--transition);
+        }
+
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+            width: 100%;
+            margin-top: 40px;
+        }
+
+        .service-card {
+            background: rgba(255, 255, 255, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            border-radius: 24px;
+            padding: 30px 24px;
+            transition: var(--transition);
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .service-card:hover {
+            transform: translateY(-8px);
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 15px 35px rgba(5, 150, 105, 0.1);
+            border-color: rgba(52, 211, 153, 0.4);
+        }
+
+        .service-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, var(--green-light), #ffffff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--green-1);
+            font-size: 24px;
+            border: 1px solid rgba(52, 211, 153, 0.2);
+            transition: var(--transition);
+        }
+
+        .service-card:hover .service-icon {
+            background: linear-gradient(135deg, var(--green-1), var(--green-2));
+            color: white;
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .service-card h3 {
+            font-size: 1.25rem;
+            color: var(--green-deep);
+            font-weight: 600;
+        }
+
+        .service-card p {
+            font-size: 0.95rem;
+            color: #4b5563;
+            line-height: 1.5;
+        }
+
+        
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            width: 100%;
+            margin-top: 40px;
+        }
+
+        .portfolio-card {
+            position: relative;
+            border-radius: 24px;
+            overflow: hidden;
+            height: 300px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            background-color: #eaeaea;
+        }
+
+        .portfolio-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .portfolio-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(6, 78, 59, 0.95), rgba(6, 78, 59, 0.3));
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: flex-start;
+            padding: 24px;
+            text-align: left;
+            opacity: 0;
+            transform: translateY(15px);
+            transition: var(--transition);
+        }
+
+        .portfolio-card:hover .portfolio-overlay {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .portfolio-card:hover .portfolio-img {
+            transform: scale(1.1);
+        }
+
+        .portfolio-overlay h4 {
+            color: white;
+            font-size: 1.3rem;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        .portfolio-overlay p {
+            color: var(--green-3);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        /* Contact Section Details & Forms */
+        .contact-layout {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 40px;
+            text-align: left;
+            margin-top: 35px;
+            width: 100%;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 16px 20px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: var(--transition);
+            color: #ecfdf5;
+            text-decoration: none;
+        }
+
+        .info-item:hover {
+            background: rgba(255, 255, 255, 0.12);
+            transform: translateX(6px);
+            border-color: rgba(52, 211, 153, 0.3);
+        }
+
+        .info-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: rgba(52, 211, 153, 0.2);
+            color: var(--green-3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+
+        .info-text h5 {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--green-3);
+            margin-bottom: 2px;
+        }
+
+        .info-text p {
+            font-size: 1rem;
+            color: white;
+            font-weight: 500;
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-group label {
+            color: #a7f3d0;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-left: 4px;
+        }
+
+        .form-control {
+            background: rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 12px 18px;
+            color: white;
+            font-family: inherit;
+            font-size: 0.95rem;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--green-2);
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.25);
+            background: rgba(0, 0, 0, 0.35);
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, var(--green-1), var(--green-2));
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 14px 28px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(5, 150, 105, 0.3);
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(5, 150, 105, 0.5);
+        }
+
+        #home {
+            background: linear-gradient(135deg, var(--green-light) 0%, #ffffff 100%);
+        }
+        
+        #home::before {
+            content: '';
+            position: absolute;
+            top: 20%; left: 15%;
+            width: 400px; height: 400px;
+            background: var(--green-3);
+            filter: blur(120px);
+            opacity: 0.15;
+            z-index: -1;
+            border-radius: 50%;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        #about { background: linear-gradient(135deg, #ffffff 0%, var(--green-light) 100%); }
+        #services { background: linear-gradient(135deg, var(--green-light) 0%, #ffffff 100%); }
+        #portfolio { background: linear-gradient(135deg, #ffffff 0%, var(--green-light) 100%); }
+        
+        #contact {
+            background: linear-gradient(135deg, var(--green-deep) 0%, var(--green-1) 100%);
+        }
+        #contact .content-wrapper {
+            background: rgba(0, 0, 0, 0.2);
+            border-color: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+        #contact:hover .content-wrapper {
+            background: rgba(0, 0, 0, 0.25);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+            border-color: rgba(52, 211, 153, 0.5);
+        }
+        #contact .section-title {
+            background: linear-gradient(135deg, #a7f3d0, #ffffff);
+            -webkit-background-clip: text;
+        }
+        #contact .section-desc { color: #a7f3d0; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-40px) scale(1.05); }
+        }
+
+        
+        .hero-tag {
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 700;
+            color: var(--green-1);
+            margin-bottom: 15px;
+            background: var(--green-light);
+            padding: 6px 16px;
+            border-radius: 50px;
+            display: inline-block;
+            border: 1px solid rgba(52, 211, 153, 0.2);
+        }
+
+        .hero-actions {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 30px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .cta-btn {
+            padding: 14px 28px;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .cta-btn.primary {
+            background: linear-gradient(135deg, var(--green-1), var(--green-2));
+            color: white;
+            box-shadow: 0 4px 15px rgba(5, 150, 105, 0.3);
+        }
+
+        .cta-btn.primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(5, 150, 105, 0.5);
+        }
+
+        .cta-btn.secondary {
+            background: rgba(255, 255, 255, 0.5);
+            color: var(--green-deep);
+            border: 1px solid rgba(5, 150, 105, 0.2);
+            backdrop-filter: blur(8px);
+        }
+
+        .cta-btn.secondary:hover {
+            background: rgba(255, 255, 255, 0.8);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(5, 150, 105, 0.1);
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .stat-number {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--green-deep);
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: #6b7280;
+            font-weight: 500;
+        }
+
+        .stat-divider {
+            width: 1px;
+            height: 40px;
+            background: rgba(5, 150, 105, 0.15);
+        }
+
+        /* About Section Grid */
+        .mb-40 {
+            margin-bottom: 40px;
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            width: 100%;
+        }
+
+        .about-card {
+            background: rgba(255, 255, 255, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 24px;
+            padding: 35px 24px;
+            text-align: left;
+            transition: var(--transition);
+        }
+
+        .about-card:hover {
+            transform: translateY(-6px);
+            background: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 15px 35px rgba(5, 150, 105, 0.1);
+            border-color: rgba(52, 211, 153, 0.3);
+        }
+
+        .about-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--green-light), #ffffff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--green-1);
+            margin-bottom: 20px;
+            border: 1px solid rgba(52, 211, 153, 0.2);
+        }
+
+        .about-card h4 {
+            font-size: 1.25rem;
+            color: var(--green-deep);
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .about-card p {
+            font-size: 0.95rem;
+            color: #4b5563;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            header {
+                width: 90%;
+                padding: 12px 20px;
+            }
+            
+            .nav-indicator {
+                display: none !important;
+            }
+
+            .nav-link:hover {
+                color: var(--green-1);
+                background: rgba(52, 211, 153, 0.1);
+                text-shadow: 0 0 12px rgba(52, 211, 153, 0.5);
+            }
+
+            .nav-link.active {
+                background: linear-gradient(135deg, var(--green-1), var(--green-3));
+                color: var(--text-light);
+                box-shadow: 0 4px 15px rgba(5, 150, 105, 0.4);
+                text-shadow: none;
+            }
+            
+            header.scrolled {
+                width: 95%;
+            }
+
+            .hamburger {
+                display: block;
+                padding: 5px 10px; 
+                margin-right: -10px;
+            }
+
+            .nav-menu {
+                position: absolute;
+                top: 100%; 
+                left: 0;
+                margin-top: 15px; 
+                transform: translateY(-15px); 
+                flex-direction: column;
+                background: rgba(255, 255, 255, 0.98); 
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
+                width: 100%;
+                border-radius: 25px;
+                padding: 20px;
+                box-shadow: 0 15px 40px rgba(5, 150, 105, 0.2);
+                border: 1px solid rgba(52, 211, 153, 0.3);
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+                gap: 5px;
+            }
+
+            .nav-menu.active {
+                transform: translateY(0);
+                opacity: 1;
+                visibility: visible;
+            }
+
+            .nav-link {
+                display: block;
+                width: 100%;
+                text-align: center;
+                padding: 12px;
+                font-size: 1.1rem;
+            }
+
+            .hamburger.active .bar:nth-child(2) { opacity: 0; }
+            .hamburger.active .bar:nth-child(1) {
+                transform: translateY(8px) rotate(45deg);
+                background: var(--green-deep);
+            }
+            .hamburger.active .bar:nth-child(3) {
+                transform: translateY(-8px) rotate(-45deg);
+                background: var(--green-deep);
+            }
+
+            .section-title { font-size: 2.5rem; }
+            .content-wrapper { padding: 40px 20px; }
+
+            .contact-layout {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .stat-divider {
+                display: none;
+            }
+            .hero-stats {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header & Navigation -->
+    <header id="header">
+        <nav>
+            <a href="#home" class="logo">NexGen.</a>
+            
+            <ul class="nav-menu">
+                <!-- Added sliding indicator element -->
+                <li class="nav-indicator" aria-hidden="true"></li>
+                
+                <li class="nav-item"><a href="#home" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="#about" class="nav-link">About</a></li>
+                <li class="nav-item"><a href="#services" class="nav-link">Services</a></li>
+                <li class="nav-item"><a href="#portfolio" class="nav-link">Portfolio</a></li>
+                <li class="nav-item"><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
+
+            <!-- Mobile Hamburger Icon -->
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Sample Page Sections with Glassmorphism Wrappers -->
+    <main>
+        <section id="home">
+            <div class="content-wrapper">
+                <div class="hero-tag">NEXGEN DIGITAL ECOSYSTEMS</div>
+                <h1 class="section-title">Architecting Sustainable Web Experiences</h1>
+                <p class="section-desc">We build lightning-fast digital solutions using environmentally friendly coding patterns and premium glassmorphism layouts that automatically adapt across every device.</p>
+                
+                <div class="hero-actions">
+                    <a href="#services" class="cta-btn primary">Explore Services</a>
+                    <a href="#about" class="cta-btn secondary">Who We Are</a>
+                </div>
+
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">99.9%</span>
+                        <span class="stat-label">Eco-Friendly Uptime</span>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <span class="stat-number">150+</span>
+                        <span class="stat-label">Projects Completed</span>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <span class="stat-number">25ms</span>
+                        <span class="stat-label">Avg Interaction Latency</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="about">
+            <div class="content-wrapper">
+                <h2 class="section-title">About Our Mission</h2>
+                <p class="section-desc mb-40">We combine premium glassmorphism effects with vibrant green neon accents to build deeply immersive and highly scalable web architectures.</p>
+                
+                <div class="about-grid">
+                    <div class="about-card">
+                        <div class="about-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/></svg>
+                        </div>
+                        <h4>Our Mission</h4>
+                        <p>To design lightweight, blazing-fast interfaces that drastically reduce internet-related power grids while retaining absolute visual prestige and user flow.</p>
+                    </div>
+                    
+                    <div class="about-card">
+                        <div class="about-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16V12M12 8h.01"/></svg>
+                        </div>
+                        <h4>Our Philosophy</h4>
+                        <p>We treat web environments as living systems. Combining kinetic feedback layers, glass reflections, and responsive modules allows users to connect naturally.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dynamic Services Section -->
+        <section id="services">
+            <div class="content-wrapper">
+                <h2 class="section-title">Our Services</h2>
+                <p class="section-desc">We provide modular and scalable digital engineering with modern architecture standards.</p>
+                
+                <div class="services-grid">
+                    <!-- Service 1 -->
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                        </div>
+                        <h3>Interactive Web Apps</h3>
+                        <p>We build highly performant, responsive web apps using cutting-edge design guidelines and optimized states.</p>
+                    </div>
+                    <!-- Service 2 -->
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                        </div>
+                        <h3>Security & Safety</h3>
+                        <p>Robust threat checking, secure data layers, and structured encryption modules built right into your core systems.</p>
+                    </div>
+                    <!-- Service 3 -->
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3V6a3 3 0 0 0-3-3zM6 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3V6a3 3 0 0 0-3-3z"/></svg>
+                        </div>
+                        <h3>Consulting & Strategy</h3>
+                        <p>End-to-end cloud infrastructure planning to achieve highly scalable products with optimal deployment times.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dynamic Portfolio Section -->
+        <section id="portfolio">
+            <div class="content-wrapper">
+                <h2 class="section-title">Our Portfolio</h2>
+                <p class="section-desc">A handpicked showcase of our high-quality digital architectures.</p>
+                
+                <div class="portfolio-grid">
+                    <!-- Project 1 -->
+                    <div class="portfolio-card">
+                        <img class="portfolio-img" src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80" alt="Data Analytics Suite">
+                        <div class="portfolio-overlay">
+                            <h4>Analytics Suite</h4>
+                            <p>Real-time telemetry and data visualizations</p>
+                        </div>
+                    </div>
+                    <!-- Project 2 -->
+                    <div class="portfolio-card">
+                        <img class="portfolio-img" src="https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=600&q=80" alt="E-Commerce Ecosystem">
+                        <div class="portfolio-overlay">
+                            <h4>Green Shop</h4>
+                            <p>Seamless, secure retail & payment experience</p>
+                        </div>
+                    </div>
+                    <!-- Project 3 -->
+                    <div class="portfolio-card">
+                        <img class="portfolio-img" src="https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=600&q=80" alt="Interactive Collaboration Tool">
+                        <div class="portfolio-overlay">
+                            <h4>Collab Workspace</h4>
+                            <p>SaaS platform designed for global cross-teams</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dynamic Contact Section -->
+        <section id="contact">
+            <div class="content-wrapper">
+                <h2 class="section-title">Contact Us</h2>
+                <p class="section-desc">Have a question or proposal? Drop us a line and let's bring it to life.</p>
+                
+                <div class="contact-layout">
+                    <!-- Contact Details Left -->
+                    <div class="contact-info">
+                        <a href="mailto:hello@nexgendigital.com" class="info-item">
+                            <div class="info-icon">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                            </div>
+                            <div class="info-text">
+                                <h5>Direct Mail</h5>
+                                <p>hello@nexgendigital.com</p>
+                            </div>
+                        </a>
+                        <a href="tel:+123456789" class="info-item">
+                            <div class="info-icon">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                            </div>
+                            <div class="info-text">
+                                <h5>Call Us</h5>
+                                <p>+1 (555) 349-2092</p>
+                            </div>
+                        </a>
+                    </div>
+                    
+                    <!-- Glassmorphic Form Right -->
+                    <div style="width: 100%; display: flex; flex-direction: column; gap: 16px;">
+                        <form id="contact-form" class="contact-form" style="display: flex; flex-direction: column; gap: 16px;">
+                            <div class="form-group">
+                                <label for="name">Your Name</label>
+                                <input type="text" id="name" class="form-control" placeholder="Enter your name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Your Email</label>
+                                <input type="email" id="email" class="form-control" placeholder="name@domain.com" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="message">Message</label>
+                                <textarea id="message" rows="4" class="form-control" placeholder="How can we help you?" required></textarea>
+                            </div>
+                            <button type="submit" class="submit-btn">
+                                Send Message
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                            </button>
+                        </form>
+                        
+                        <!-- Inline Custom Message Box (Safe replacement for native alert) -->
+                        <div id="form-success-box" style="display: none; background: rgba(16, 185, 129, 0.2); border: 1px solid var(--green-2); color: white; padding: 20px; border-radius: 20px; align-items: center; justify-content: center; flex-direction: column; text-align: center; gap: 12px; backdrop-filter: blur(12px);">
+                            <div style="width: 44px; height: 44px; border-radius: 50%; background: rgba(52, 211, 153, 0.3); display: flex; align-items: center; justify-content: center; color: var(--green-3);">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                            </div>
+                            <h4 style="font-weight: 600; font-size: 1.1rem; margin: 0;">Message Sent Successfully!</h4>
+                            <p style="font-size: 0.9rem; color: #a7f3d0; margin: 0; line-height: 1.4;">Thank you for reaching out. A representative from NexGen will contact you shortly.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Vanilla JavaScript -->
+    <script>
+        
+        const header = document.getElementById('header');
+        const hamburger = document.querySelector('.hamburger');
+        const navMenu = document.querySelector('.nav-menu');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const sections = document.querySelectorAll('section');
+        const indicator = document.querySelector('.nav-indicator');
+
+        function moveIndicator(link) {
+            if (!link || window.innerWidth <= 768) return; 
+            
+            const linkRect = link.getBoundingClientRect();
+            const menuRect = navMenu.getBoundingClientRect();
+            
+            indicator.style.width = `${linkRect.width}px`;
+            indicator.style.transform = `translateX(${linkRect.left - menuRect.left}px)`;
+            indicator.style.opacity = '1';
+        }
+
+        navLinks.forEach(link => {
+            link.addEventListener('mouseenter', (e) => {
+                moveIndicator(e.target);
+            });
+        });
+
+        navMenu.addEventListener('mouseleave', () => {
+            const activeLink = document.querySelector('.nav-link.active');
+            moveIndicator(activeLink);
+        });
+        
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768) {
+                const activeLink = document.querySelector('.nav-link.active');
+                moveIndicator(activeLink);
+            } else {
+                indicator.style.opacity = '0';
+            }
+        });
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 20) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navMenu.classList.remove('active');
+            });
+        });
+
+        
+        const contactForm = document.getElementById('contact-form');
+        const formSuccessBox = document.getElementById('form-success-box');
+        if (contactForm && formSuccessBox) {
+            contactForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                contactForm.style.display = 'none';
+                formSuccessBox.style.display = 'flex';
+            });
+        }
+
+        const observerOptions = {
+            root: null,
+            rootMargin: '-50% 0px -50% 0px', 
+            threshold: 0
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const currentId = entry.target.getAttribute('id');
+                    
+                    navLinks.forEach(link => {
+                        link.classList.remove('active');
+                        
+                        if (link.getAttribute('href') === `#${currentId}`) {
+                            link.classList.add('active');
+                            moveIndicator(link); 
+                        }
+                    });
+                }
+            });
+        }, observerOptions);
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>
